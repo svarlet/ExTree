@@ -4,6 +4,11 @@ defmodule ExTree.GeneralTree do
   @type t :: %GeneralTree{value: any, children: list}
   defstruct value: nil, children: nil
 
+  @doc """
+  Indicates if a tree is a leaf.
+
+  A tree is a leaf if it has no children (nil or []).
+  """
   def leaf?(tree) do
     case tree do
       %GeneralTree{children: nil} -> true

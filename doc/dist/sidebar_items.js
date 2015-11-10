@@ -1,0 +1,1 @@
+sidebarNodes={"exceptions":[],"extras":[{"id":"extra-api-reference","title":"API Reference","headers":[]}],"modules":[{"id":"ExTree","title":"ExTree"},{"id":"ExTree.GeneralTree","title":"ExTree.GeneralTree","functions":[{"id":"depth_first_traversal/3","anchor":"depth_first_traversal/3"},{"id":"leaf?/1","anchor":"leaf?/1"}],"types":[{"id":"t/0","anchor":"t:t/0"}]}],"protocols":[]}

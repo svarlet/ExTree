@@ -31,4 +31,14 @@ defmodule ExTree.GeneralTree do
       List.foldl(tree.children, acc ++ [node_visitor.(tree)], fn node, acc -> depth_first_traversal(node, acc, node_visitor) end)
     end
   end
+
+  # EASY AND WORK BUT CAN TECHNICALLY BLOW UP THE STACK
+  # def parse(tree) do
+  #   if leaf? tree do
+  #     IO.puts tree.value
+  #   else
+  #     IO.puts tree.value
+  #     Enum.map tree.children, &parse/1
+  #   end
+  # end
 end

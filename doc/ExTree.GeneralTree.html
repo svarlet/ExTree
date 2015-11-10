@@ -97,7 +97,7 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#depth_first_traversal/3">depth_first_traversal(tree, acc \\ [], node_visitor)</a>
+    <a href="#depth_first_traversal/2">depth_first_traversal(tree, node_visitor)</a>
   </div>
   
     <div class="summary-synopsis"><p>Depth first traversal of a tree</p>
@@ -150,12 +150,12 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="depth_first_traversal/3">
+          <div class="detail" id="depth_first_traversal/2">
   <div class="detail-header">
-    <a href="#depth_first_traversal/3" class="detail-link" title="Link to this function">
+    <a href="#depth_first_traversal/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">depth_first_traversal(tree, acc \\ [], node_visitor)</span>
+    <span class="signature">depth_first_traversal(tree, node_visitor)</span>
       
   </div>
   
@@ -163,7 +163,7 @@
       <h4 class="specs-title">Specs</h4>
       <div class="specs-list">
         
-          <pre><code class="elixir">depth_first_traversal(<a href="#t:t/0">t</a>, any, (<a href="#t:t/0">t</a> -> any)) :: list</code></pre>
+          <pre><code class="elixir">depth_first_traversal(<a href="#t:t/0">t</a>, (<a href="#t:t/0">t</a> -> any)) :: list</code></pre>
         
       </div>
     </div>
@@ -186,7 +186,8 @@ accumulator.</p>
   
   <section class="docstring">
     <p>Indicates if a tree is a leaf.</p>
-<p>A tree is a leaf if it has no children (nil or []).</p>
+<p>A tree is a leaf if its children property is an empty list
+.</p>
 
   </section>
 </div>

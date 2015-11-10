@@ -11,7 +11,7 @@ defmodule ExTree.GeneralTreeTest do
 
   test "has no children by default" do
     tree = %GeneralTree{}
-    assert nil == tree.children
+    assert [] == tree.children
   end
 
   test "a tree with no children is a leaf" do

@@ -2,16 +2,16 @@ defmodule ExTree.GeneralTree do
   alias ExTree.GeneralTree
 
   @type t :: %GeneralTree{value: any, children: list}
-  defstruct value: nil, children: nil
+  defstruct value: nil, children: []
 
   @doc """
   Indicates if a tree is a leaf.
 
-  A tree is a leaf if it has no children (nil or []).
+  A tree is a leaf if its children property is an empty list
+  .
   """
   def leaf?(tree) do
     case tree do
-      %GeneralTree{children: nil} -> true
       %GeneralTree{children: []} -> true
       _ -> false
     end
@@ -23,22 +23,18 @@ defmodule ExTree.GeneralTree do
   Invokes node_visitor on each node/leaf and accumulates results in an
   accumulator.
   """
-  @spec depth_first_traversal(t, any, (t -> any)) :: list
-  def depth_first_traversal(tree, acc \\ [], node_visitor) do
-    if leaf?(tree) do
-      acc ++ [node_visitor.(tree)]
-    else
-      List.foldl(tree.children, acc ++ [node_visitor.(tree)], fn node, acc -> depth_first_traversal(node, acc, node_visitor) end)
-    end
+  @spec depth_first_traversal(t, (t -> any)) :: list
+  def depth_first_traversal(tree, _node_visitor) do
+    depth_first_traversal_acc([tree.value], tree.children)
+    |> Enum.reverse
   end
 
-  # EASY AND WORK BUT CAN TECHNICALLY BLOW UP THE STACK
-  # def parse(tree) do
-  #   if leaf? tree do
-  #     IO.puts tree.value
-  #   else
-  #     IO.puts tree.value
-  #     Enum.map tree.children, &parse/1
-  #   end
-  # end
+  defp depth_first_traversal_acc(acc, forest) do
+    if forest == [] do
+      acc
+    else
+      [tree | trees] = forest
+      depth_first_traversal_acc([tree.value | acc], tree.children ++ trees)
+    end
+  end
 end

@@ -7,8 +7,7 @@ defmodule ExTree.GeneralTree do
   @doc """
   Indicates if a tree is a leaf.
 
-  A tree is a leaf if its children property is an empty list
-  .
+  A tree is a leaf if its children property is an empty list.
   """
   @spec leaf?(t) :: boolean
   def leaf?(tree) do

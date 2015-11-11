@@ -10,6 +10,7 @@ defmodule ExTree.GeneralTree do
   A tree is a leaf if its children property is an empty list
   .
   """
+  @spec leaf?(t) :: boolean
   def leaf?(tree) do
     case tree do
       %GeneralTree{children: []} -> true

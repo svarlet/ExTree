@@ -61,4 +61,19 @@ defmodule ExTree.GeneralTreeTest do
     assert depth_first_traversal(subtree1, times18) == [1 * 18, 2 * 18, 4 * 18, 5 * 18, 3 * 18]
   end
 
+  test "breadth first traversal constructs a list of the tree values" do
+    create_sample
+    assert breadth_first_traversal(subtree4) == [4]
+    assert breadth_first_traversal(subtree2) == [2, 4, 5]
+    assert breadth_first_traversal(subtree1) == [1, 2, 3, 4, 5]
+  end
+
+  test "breadth first traversal constructs a list with the visitor function" do
+    create_sample
+
+    times17 = fn tree -> tree.value * 17 end
+    assert breadth_first_traversal(subtree4, times17) == [4 * 17]
+    assert breadth_first_traversal(subtree2, times17) == [2 * 17, 4 * 17, 5 * 17]
+    assert breadth_first_traversal(subtree1, times17) == [1 * 17, 2 * 17, 3 * 17, 4 * 17, 5 * 17]
+  end
 end

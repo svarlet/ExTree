@@ -36,4 +36,24 @@ defmodule ExTree.GeneralTree do
       depth_first_traversal_acc([tree_visitor.(tree) | acc], tree.children ++ trees, tree_visitor)
     end
   end
+
+  @doc """
+  Breadth first traversal of a tree.
+
+  Invokes tree_visitor on each tree and accumulates the results in a list.
+  """
+  @spec breadth_first_traversal(t, (t -> any)) :: list
+  def breadth_first_traversal(tree, tree_visitor \\ fn tree -> tree.value end) do
+    breadth_first_traversal_acc([tree_visitor.(tree)], tree.children, tree_visitor)
+    |> Enum.reverse
+  end
+
+  defp breadth_first_traversal_acc(acc, forest, tree_visitor) do
+    if forest == [] do
+      acc
+    else
+      [tree | trees] = forest
+      breadth_first_traversal_acc([tree_visitor.(tree) | acc], trees ++ tree.children, tree_visitor)
+    end
+  end
 end

@@ -76,4 +76,32 @@ defmodule ExTree.GeneralTreeTest do
     assert breadth_first_traversal(subtree2, times17) == [2 * 17, 4 * 17, 5 * 17]
     assert breadth_first_traversal(subtree1, times17) == [1 * 17, 2 * 17, 3 * 17, 4 * 17, 5 * 17]
   end
+
+  test "inserting a branch in a leaf" do
+    tree = %GeneralTree{value: :root}
+    branch = %GeneralTree{value: :t1, children: [%GeneralTree{value: :t2}]}
+    assert insert_branch(tree, branch) == %GeneralTree{value: :root,
+                                                       children: [%GeneralTree{value: :t1,
+                                                                               children: [%GeneralTree{value: :t2}]}]}
+  end
+
+  test "inserting a branch in a node" do
+    tree = %GeneralTree{value: :root, children: [%GeneralTree{value: 1}, %GeneralTree{value: 2}]}
+    branch = %GeneralTree{value: 3, children: [%GeneralTree{value: 4}]}
+    assert insert_branch(tree, branch) == %GeneralTree{value: :root,
+                                                       children: [%GeneralTree{value: 1},
+                                                                  %GeneralTree{value: 2},
+                                                                  %GeneralTree{value: 3,
+                                                                               children: [%GeneralTree{value: 4}]}
+                                                                 ]}
+  end
+
+  test "given a tree and a branch when their roots are equal then the tail of the branch is inserted in the children of the tree" do
+    tree = %GeneralTree{value: :root, children: [%GeneralTree{value: 1}, %GeneralTree{value: 2}]}
+    branch = %GeneralTree{value: 2, children: [%GeneralTree{value: 3}]}
+    assert insert_branch(tree, branch) == %GeneralTree{value: :root,
+                                                       children: [%GeneralTree{value: 1},
+                                                                  %GeneralTree{value: 2,
+                                                                               children: [%GeneralTree{value: 3}]}]}
+  end
 end

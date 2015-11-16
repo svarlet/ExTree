@@ -56,4 +56,21 @@ defmodule ExTree.GeneralTree do
       breadth_first_traversal_acc([tree_visitor.(tree) | acc], trees ++ tree.children, tree_visitor)
     end
   end
+
+  def insert_branch(tree, branch) do
+    cond do
+      tree == nil -> branch
+      branch == nil -> tree
+      true ->
+        path = build_insertion_path([], tree, branch)
+        # rebuild the tree by consuming the path
+    end
+  end
+
+  defp build_insertion_path(path, tree, branch) do
+    case Enum.find_index(tree.children, &(&1.value == branch.value)) do
+      nil -> [{length(tree.children), tree} | path]
+      index -> build_insertion_path([{index, tree} | path], tree, branch.children[0])
+    end
+  end
 end

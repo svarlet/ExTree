@@ -57,20 +57,35 @@ defmodule ExTree.GeneralTree do
     end
   end
 
-  def insert_branch(tree, branch) do
-    cond do
-      tree == nil -> branch
-      branch == nil -> tree
-      true ->
-        path = build_insertion_path([], tree, branch)
-        # rebuild the tree by consuming the path
-    end
+  def insert_branch(nil, nil) do
+    nil
   end
 
-  defp build_insertion_path(path, tree, branch) do
-    case Enum.find_index(tree.children, &(&1.value == branch.value)) do
-      nil -> [{length(tree.children), tree} | path]
-      index -> build_insertion_path([{index, tree} | path], tree, branch.children[0])
-    end
+  def insert_branch(nil, [value | rest]) do
+    insert_branch(%GeneralTree{value: value}, rest)
+  end
+
+  def insert_branch(tree, nil) do
+    tree
+  end
+
+  def insert_branch(tree, []) do
+    tree
+  end
+
+  def insert_branch(tree, [value | rest] = branch) do
+    IO.puts "Inserting #{inspect branch} into #{inspect tree}"
+    index = Enum.find_index(tree.children, &(&1.value == value))
+    subtree = case index do
+                nil -> %GeneralTree{value: value}
+                _ -> tree.children[index]
+              end
+    subforest = case index do
+                  nil -> tree.children ++ [insert_branch(subtree, rest)]
+                  _ -> List.replace_at(tree.children, index, insert_branch(subtree, rest))
+                end
+    tt = %GeneralTree{tree | children: subforest}
+    IO.puts "Created/Returning new tree: #{inspect tt}"
+    tt
   end
 end

@@ -54,7 +54,6 @@ defmodule ExTree.GeneralTreeTest do
 
   test "depth first traversal constructs a list with the visitor function" do
     create_sample
-
     times18 = fn tree -> tree.value * 18 end
     assert depth_first_traversal(subtree4, times18) == [4 * 18]
     assert depth_first_traversal(subtree2, times18) == [2 * 18, 4 * 18, 5 * 18]
@@ -70,38 +69,36 @@ defmodule ExTree.GeneralTreeTest do
 
   test "breadth first traversal constructs a list with the visitor function" do
     create_sample
-
     times17 = fn tree -> tree.value * 17 end
     assert breadth_first_traversal(subtree4, times17) == [4 * 17]
     assert breadth_first_traversal(subtree2, times17) == [2 * 17, 4 * 17, 5 * 17]
     assert breadth_first_traversal(subtree1, times17) == [1 * 17, 2 * 17, 3 * 17, 4 * 17, 5 * 17]
   end
 
-  test "inserting a branch in a leaf" do
-    tree = %GeneralTree{value: :root}
-    branch = %GeneralTree{value: :t1, children: [%GeneralTree{value: :t2}]}
-    assert insert_branch(tree, branch) == %GeneralTree{value: :root,
-                                                       children: [%GeneralTree{value: :t1,
-                                                                               children: [%GeneralTree{value: :t2}]}]}
+  test "inserting a nil branch into a tree returns the tree" do
+    create_sample
+    assert insert_branch(subtree1, nil) == subtree1
   end
 
-  test "inserting a branch in a node" do
-    tree = %GeneralTree{value: :root, children: [%GeneralTree{value: 1}, %GeneralTree{value: 2}]}
-    branch = %GeneralTree{value: 3, children: [%GeneralTree{value: 4}]}
-    assert insert_branch(tree, branch) == %GeneralTree{value: :root,
-                                                       children: [%GeneralTree{value: 1},
-                                                                  %GeneralTree{value: 2},
-                                                                  %GeneralTree{value: 3,
-                                                                               children: [%GeneralTree{value: 4}]}
-                                                                 ]}
+  test "inserting an empty branch into a tree returns the tree" do
+    create_sample
+    assert insert_branch(subtree1, []) == subtree1
   end
 
-  test "given a tree and a branch when their roots are equal then the tail of the branch is inserted in the children of the tree" do
-    tree = %GeneralTree{value: :root, children: [%GeneralTree{value: 1}, %GeneralTree{value: 2}]}
-    branch = %GeneralTree{value: 2, children: [%GeneralTree{value: 3}]}
-    assert insert_branch(tree, branch) == %GeneralTree{value: :root,
-                                                       children: [%GeneralTree{value: 1},
-                                                                  %GeneralTree{value: 2,
-                                                                               children: [%GeneralTree{value: 3}]}]}
+  test "inserting a single element branch in a nil tree should return a leaf set with that element" do
+    tree = insert_branch(nil, [42])
+    assert tree.value == 42
+    assert leaf?(tree)
+  end
+
+  test "inserting a branch into a nil tree returns a tree constructed from the branch element" do
+    tree = insert_branch(nil, [1, 2, 3])
+    t1 = tree
+    require IEx
+    IEx.pry
+    t2 = t1.children[0]
+    IO.inspect t2
+    t3 = t2.children[0]
+    assert [1, 2, 3] = [t1.value, t2.value, t3.value]
   end
 end

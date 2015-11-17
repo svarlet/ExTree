@@ -94,11 +94,8 @@ defmodule ExTree.GeneralTreeTest do
   test "inserting a branch into a nil tree returns a tree constructed from the branch element" do
     tree = insert_branch(nil, [1, 2, 3])
     t1 = tree
-    require IEx
-    IEx.pry
-    t2 = t1.children[0]
-    IO.inspect t2
-    t3 = t2.children[0]
+    t2 = Enum.at t1.children, 0
+    t3 = Enum.at t2.children, 0
     assert [1, 2, 3] = [t1.value, t2.value, t3.value]
   end
 end

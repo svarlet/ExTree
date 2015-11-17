@@ -57,6 +57,16 @@ defmodule ExTree.GeneralTree do
     end
   end
 
+  @doc """
+  Insert a branch in a general tree.
+
+  The branch should be provided as a list of values. The head of the list will be
+  used as the root of the branch.
+  The branch is inserted as a tree under the provided tree. The reason is because when
+  the root of the branch doesn't match the root of the provided tree, a forest must be
+  created under a new root which may not be desirable.
+  """
+  @spec insert_branch(t, [any]) :: t
   def insert_branch(nil, nil) do
     nil
   end
@@ -74,18 +84,15 @@ defmodule ExTree.GeneralTree do
   end
 
   def insert_branch(tree, [value | rest] = branch) do
-    IO.puts "Inserting #{inspect branch} into #{inspect tree}"
     index = Enum.find_index(tree.children, &(&1.value == value))
     subtree = case index do
                 nil -> %GeneralTree{value: value}
-                _ -> tree.children[index]
+                _ -> Enum.at tree.children, index
               end
     subforest = case index do
                   nil -> tree.children ++ [insert_branch(subtree, rest)]
                   _ -> List.replace_at(tree.children, index, insert_branch(subtree, rest))
                 end
-    tt = %GeneralTree{tree | children: subforest}
-    IO.puts "Created/Returning new tree: #{inspect tt}"
-    tt
+    %GeneralTree{tree | children: subforest}
   end
 end

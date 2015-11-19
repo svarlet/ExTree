@@ -122,6 +122,14 @@ defmodule ExTree.GeneralTreeTest do
     assert descendant.value == :d
   end
 
+  test "inserting a branch into a tree which already contains this exact branch" do
+    flunk "not implemented yet"
+  end
+
+  test "inserting a branch into a tree which already contains this branch" do
+    flunk "not implemented yet"
+  end
+
   test "inserting a branch into a tree which is not a branch itself insert the absent nodes and leaf" do
     #      a
     #     / \

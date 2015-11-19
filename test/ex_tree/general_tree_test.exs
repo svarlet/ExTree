@@ -98,4 +98,44 @@ defmodule ExTree.GeneralTreeTest do
     t3 = Enum.at t2.children, 0
     assert [1, 2, 3] = [t1.value, t2.value, t3.value]
   end
+
+  test "inserting a branch to a leaf sets this branch as its unique child" do
+    leaf = %GeneralTree{value: 42}
+    branch = ["a", "b"]
+    tree = insert_branch(leaf, branch)
+    assert tree.value == leaf.value
+    assert %GeneralTree{value: 42, children: [%GeneralTree{value: "a", children: [%GeneralTree{value: "b"}]}]} = tree
+  end
+
+  test "inserting a branch in a tree which already contains part of this branch will insert the absent part of the branch" do
+    tree = insert_branch(nil, [:a, :b, :c])
+    tree_with_d_symbol = insert_branch(tree, [:b, :c, :d])
+    assert tree_with_d_symbol.value == :a
+
+    descendant = hd(tree_with_d_symbol.children)
+    assert descendant.value == :b
+
+    descendant = hd(descendant.children)
+    assert descendant.value == :c
+
+    descendant = hd(descendant.children)
+    assert descendant.value == :d
+  end
+
+  test "inserting a branch into a tree which is not a branch itself insert the absent nodes and leaf" do
+    #      a
+    #     / \
+    #    b   e
+    #   / \  /\
+    #  c  d f  g
+
+    tree = insert_branch(nil, [:a, :b, :c])
+    |> insert_branch([:b, :d])
+    |> insert_branch([:e, :f])
+    |> insert_branch([:e, :g])
+
+    assert tree.value == :a
+    flunk "Structure of the tree should be verified."
+  end
+
 end

@@ -45,19 +45,12 @@ defmodule ExTree.GeneralTreeTest do
     end
   end
 
-  test "depth first traversal constructs a list of the trees value" do
-    create_sample
-    assert depth_first_traversal(subtree4) == [4]
-    assert depth_first_traversal(subtree2) == [2, 4, 5]
-    assert depth_first_traversal(subtree1) == [1, 2, 4, 5, 3]
-  end
-
   test "depth first traversal constructs a list with the visitor function" do
     create_sample
-    times18 = fn tree -> tree.value * 18 end
-    assert depth_first_traversal(subtree4, times18) == [4 * 18]
-    assert depth_first_traversal(subtree2, times18) == [2 * 18, 4 * 18, 5 * 18]
-    assert depth_first_traversal(subtree1, times18) == [1 * 18, 2 * 18, 4 * 18, 5 * 18, 3 * 18]
+    enqueue = fn value, queue -> queue ++ [18 * value] end
+    assert depth_first_traversal(subtree4, [], enqueue) == [4 * 18]
+    assert depth_first_traversal(subtree2, [], enqueue) == [2 * 18, 4 * 18, 5 * 18]
+    assert depth_first_traversal(subtree1, [], enqueue) == [1 * 18, 2 * 18, 4 * 18, 5 * 18, 3 * 18]
   end
 
   test "breadth first traversal constructs a list of the tree values" do

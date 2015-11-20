@@ -22,19 +22,17 @@ defmodule ExTree.GeneralTree do
 
   Invokes tree_visitor on each tree and accumulates the results in a list.
   """
-  @spec depth_first_traversal(t, (t -> any)) :: list
-  def depth_first_traversal(tree, tree_visitor \\ fn tree -> tree.value end) do
-    depth_first_traversal_acc([tree_visitor.(tree)], tree.children, tree_visitor)
-    |> Enum.reverse
+  @spec depth_first_traversal(t, any, (any, any -> any)) :: any
+  def depth_first_traversal(tree, acc, reducer) do
+    depth_first_traversal_acc(reducer.(tree.value, acc), tree.children, reducer)
   end
 
-  defp depth_first_traversal_acc(acc, forest, tree_visitor) do
-    if forest == [] do
-      acc
-    else
-      [tree | trees] = forest
-      depth_first_traversal_acc([tree_visitor.(tree) | acc], tree.children ++ trees, tree_visitor)
-    end
+  defp depth_first_traversal_acc(acc, [], _reducer) do
+    acc
+  end
+
+  defp depth_first_traversal_acc(acc, [tree | trees], reducer) do
+    depth_first_traversal_acc(reducer.(tree.value, acc), tree.children ++ trees, reducer)
   end
 
   @doc """

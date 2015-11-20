@@ -122,15 +122,15 @@ defmodule ExTree.GeneralTreeTest do
     assert descendant.value == :d
   end
 
-  test "inserting a branch into a tree which already contains this exact branch" do
-    flunk "not implemented yet"
+  test "inserting an already existing branch should return the original tree" do
+    tree = insert_branch(nil, [:a, :b, :c])
+    |> insert_branch([:b, :d])
+
+    new_tree = insert_branch(tree, [:b, :d])
+    assert tree == new_tree
   end
 
-  test "inserting a branch into a tree which already contains this branch" do
-    flunk "not implemented yet"
-  end
-
-  test "inserting a branch into a tree which is not a branch itself insert the absent nodes and leaf" do
+  test "inserting a branch into a multi branch tree should insert the missing nodes and leaf" do
     #      a
     #     / \
     #    b   e
